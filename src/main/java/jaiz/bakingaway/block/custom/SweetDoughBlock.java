@@ -1,19 +1,18 @@
 package jaiz.bakingaway.block.custom;
 
 import jaiz.bakingaway.block.ModBlocks;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
 public class SweetDoughBlock extends Block {
@@ -43,7 +42,7 @@ public class SweetDoughBlock extends Block {
                 || blockStateFuel.isOf(Blocks.FURNACE)
                 || blockStateFuel.isOf(Blocks.SOUL_FIRE)
         ) {
-            if(state.get(DOUGH_STAGE) <= 2) {
+            if (state.get(DOUGH_STAGE) <= 2) {
                 BlockState blockStateRise = state.with(DOUGH_STAGE, state.get(DOUGH_STAGE) + 1);
                 world.setBlockState(pos, blockStateRise, Block.NOTIFY_ALL);
                 world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Emitter.of(blockStateRise));
@@ -65,6 +64,4 @@ public class SweetDoughBlock extends Block {
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(DOUGH_STAGE);
     }
-
-
 }

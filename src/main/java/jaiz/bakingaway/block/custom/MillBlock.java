@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -22,8 +21,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.Nullable;
 
 public class MillBlock extends HorizontalFacingBlock {
 
@@ -32,6 +29,27 @@ public class MillBlock extends HorizontalFacingBlock {
     public MillBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    private static boolean isWheatItem(ItemStack stack) {
+        return stack.isOf(Items.WHEAT);
+    }
+
+    public static void rotateMill(World world, BlockPos pos, BlockState state) {
+        BlockState blockStateNorth = state.with(FACING, Direction.NORTH);
+        BlockState blockStateSouth = state.with(FACING, Direction.SOUTH);
+        BlockState blockStateEast = state.with(FACING, Direction.EAST);
+        BlockState blockStateWest = state.with(FACING, Direction.WEST);
+
+        if (state.get(FACING) == Direction.NORTH) {
+            world.setBlockState(pos, blockStateEast, Block.NOTIFY_ALL);
+        } else if (state.get(FACING) == Direction.EAST) {
+            world.setBlockState(pos, blockStateSouth, Block.NOTIFY_ALL);
+        } else if (state.get(FACING) == Direction.SOUTH) {
+            world.setBlockState(pos, blockStateWest, Block.NOTIFY_ALL);
+        } else if (state.get(FACING) == Direction.WEST) {
+            world.setBlockState(pos, blockStateNorth, Block.NOTIFY_ALL);
+        }
     }
 
     @Override
@@ -49,31 +67,9 @@ public class MillBlock extends HorizontalFacingBlock {
         return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
-    private static boolean isWheatItem(ItemStack stack) {
-        return stack.isOf(Items.WHEAT);
-    }
-
-
-    public static void rotateMill(@Nullable Entity user, World world, BlockPos pos, BlockState state) {
-        BlockState blockStateNorth = state.with(FACING, Direction.NORTH);
-        BlockState blockStateSouth = state.with(FACING, Direction.SOUTH);
-        BlockState blockStateEast = state.with(FACING, Direction.EAST);
-        BlockState blockStateWest = state.with(FACING, Direction.WEST);
-
-        if(state.get(FACING) == Direction.NORTH){
-            world.setBlockState(pos, blockStateEast, Block.NOTIFY_ALL);
-        } else if(state.get(FACING) == Direction.EAST){
-            world.setBlockState(pos, blockStateSouth, Block.NOTIFY_ALL);
-        } else if(state.get(FACING) == Direction.SOUTH){
-            world.setBlockState(pos, blockStateWest, Block.NOTIFY_ALL);
-        } else if(state.get(FACING) == Direction.WEST){
-            world.setBlockState(pos, blockStateNorth, Block.NOTIFY_ALL);
-        }
-    }
-
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity user, Hand hand, BlockHitResult hit) {
-        rotateMill(user, world,pos, state);
+        rotateMill(world, pos, state);
         world.playSound(user, pos, SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 1, 1);
         if (isWheatItem(stack) && state.get(FACING) == Direction.NORTH) {
             stack.decrementUnlessCreative(1, user);
@@ -82,15 +78,8 @@ public class MillBlock extends HorizontalFacingBlock {
         return ActionResult.SUCCESS;
     }
 
-
-
-
-
-
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
-
-
 }

@@ -16,7 +16,7 @@ public class IcedSpoonItem extends Item {
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         ItemStack itemStack = super.finishUsing(stack, world, user);
-        if (user instanceof PlayerEntity && ((PlayerEntity)user).getAbilities().creativeMode) {
+        if (user instanceof PlayerEntity && ((PlayerEntity) user).getAbilities().creativeMode) {
             user.emitGameEvent(GameEvent.EAT);
             return itemStack;
         }

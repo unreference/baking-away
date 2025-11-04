@@ -4,17 +4,12 @@ import jaiz.bakingaway.BakingAway;
 import jaiz.bakingaway.block.ModBlocks;
 import jaiz.bakingaway.item.custom.IcedSpoonItem;
 import net.minecraft.block.Block;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FoodComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.dedicated.management.RpcDiscover;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 import java.util.function.Function;
@@ -35,7 +30,7 @@ public class ModItems {
 
     public static final Item BURNT_DONUT = registerItem("burnt_donut", Item::new, new Item.Settings()
             .food(ModFoodComponents.BURNT_DONUT,
-            ModConsumableComponents.BURNT_DONUT));
+                    ModConsumableComponents.BURNT_DONUT));
 
 
     public static final Item UNCOOKED_DONUT =
@@ -74,7 +69,7 @@ public class ModItems {
     }
 
     public static void registerModItems() {
-        BakingAway.LOGGER.info("registering Mod Items for " +  BakingAway.MOD_ID);
+        BakingAway.LOGGER.info("registering Mod Items for " + BakingAway.MOD_ID);
     }
 }
 

@@ -1,40 +1,40 @@
 {
-	"schemaVersion": 1,
-	"id": "bakingaway",
-	"version": "${version}",
-	"name": "BakingAway",
-	"description": "Bake Donuts!",
-	"authors": [
-		"Jaiz!"
-	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
-	"license": "MIT",
-	"icon": "assets/bakingaway/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"jaiz.bakingaway.BakingAway"
-		],
-		"client": [
-			"jaiz.bakingaway.BakingAwayClient"
-		],
-		"fabric-datagen": [
-			"jaiz.bakingaway.BakingAwayDataGenerator"
-		]
-	},
-	"mixins": [
-		"bakingaway.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.17.3",
-		"minecraft": "~1.21.10",
-		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+  "schemaVersion": 1,
+  "id": "bakingaway",
+  "version": "${version}",
+  "name": "BakingAway",
+  "description": "Bake Donuts!",
+  "authors": [
+    "Jaiz!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "MIT",
+  "icon": "assets/bakingaway/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "jaiz.bakingaway.BakingAway"
+    ],
+    "client": [
+      "jaiz.bakingaway.BakingAwayClient"
+    ],
+    "fabric-datagen": [
+      "jaiz.bakingaway.BakingAwayDataGenerator"
+    ]
+  },
+  "mixins": [
+    "bakingaway.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "~1.21.10",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }

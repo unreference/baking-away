@@ -13,19 +13,20 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 
 public class BakingAwayDataGenerator implements DataGeneratorEntrypoint {
-	@Override
-	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
-		CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture = CompletableFuture.supplyAsync(
-				BuiltinRegistries::createWrapperLookup, Util.getMainWorkerExecutor()
-		);
+    private static <T extends DataProvider> DataProvider.Factory<T> toFactory(
+            BiFunction<DataOutput, CompletableFuture<RegistryWrapper.WrapperLookup>, T> baseFactory, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture
+    ) {
+        return output -> (T) baseFactory.apply(output, registriesFuture);
+    }
 
-		pack.addProvider(ModModelProvider::new);
+    @Override
+    public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
+        FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+        CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture = CompletableFuture.supplyAsync(
+                BuiltinRegistries::createWrapperLookup, Util.getMainWorkerExecutor()
+        );
 
-	}
-	private static <T extends DataProvider> DataProvider.Factory<T> toFactory(
-			BiFunction<DataOutput, CompletableFuture<RegistryWrapper.WrapperLookup>, T> baseFactory, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture
-	) {
-		return output -> (T)baseFactory.apply(output, registriesFuture);
-	}
+        pack.addProvider(ModModelProvider::new);
+
+    }
 }
