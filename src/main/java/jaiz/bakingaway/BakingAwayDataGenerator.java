@@ -2,6 +2,7 @@ package jaiz.bakingaway;
 
 import jaiz.bakingaway.datagen.ModBlockLootTableProvider;
 import jaiz.bakingaway.datagen.ModModelProvider;
+import jaiz.bakingaway.datagen.ModRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.DataOutput;
@@ -29,6 +30,6 @@ public class BakingAwayDataGenerator implements DataGeneratorEntrypoint {
 
         pack.addProvider(ModModelProvider::new);
         pack.addProvider(ModBlockLootTableProvider::new);
-
+        pack.addProvider(ModRecipeProvider::new);
     }
 }
