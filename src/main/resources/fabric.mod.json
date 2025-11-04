@@ -19,10 +19,10 @@
       "jaiz.bakingaway.BakingAway"
     ],
     "client": [
-      "jaiz.bakingaway.BakingAwayClient"
+      "jaiz.bakingaway.client.BakingAwayClient"
     ],
     "fabric-datagen": [
-      "jaiz.bakingaway.BakingAwayDataGenerator"
+      "jaiz.bakingaway.datagen.BakingAwayDataGenerator"
     ]
   },
   "mixins": [

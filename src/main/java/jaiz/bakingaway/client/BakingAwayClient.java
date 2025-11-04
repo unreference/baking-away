@@ -1,4 +1,4 @@
-package jaiz.bakingaway;
+package jaiz.bakingaway.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

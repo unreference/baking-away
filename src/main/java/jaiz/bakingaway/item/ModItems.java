@@ -3,6 +3,7 @@ package jaiz.bakingaway.item;
 import jaiz.bakingaway.BakingAway;
 import jaiz.bakingaway.block.ModBlocks;
 import jaiz.bakingaway.item.custom.IcedSpoonItem;
+import jaiz.bakingaway.item.custom.SuspiciousDonutItem;
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
@@ -24,6 +25,9 @@ public class ModItems {
             .food(ModFoodComponents.DONUT)
             .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(16675227)));
 
+    public static final Item SUSPICIOUS_DONUT = registerItem("suspicious_donut", SuspiciousDonutItem::new, new Item.Settings()
+            .food(ModFoodComponents.DONUT));
+
     public static final Item SUSHI = registerItem("sushi", Item::new, new Item.Settings()
             .food(ModFoodComponents.EXTRA_FOOD)
             .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(15719874)));
@@ -37,7 +41,6 @@ public class ModItems {
     public static final Item BURNT_DONUT = registerItem("burnt_donut", Item::new, new Item.Settings()
             .food(ModFoodComponents.BURNT_DONUT,
                     ModConsumableComponents.BURNT_DONUT));
-
 
     public static final Item UNCOOKED_DONUT =
             registerItem("uncooked_donut", Item::new, new Item.Settings().food(ModFoodComponents.UNCOOKED_DONUT));

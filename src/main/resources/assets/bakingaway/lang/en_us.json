@@ -2,7 +2,7 @@
   "block.bakingaway.mill": "Mill",
   "block.bakingaway.sweet_dough": "Sweet Dough",
   "item.bakingaway.baked_cookie": "Baked Cookie",
-  "item.bakingaway.burnt_donut": "Burnt Donut",
+  "item.bakingaway.burnt_donut": "Burned Donut",
   "item.bakingaway.donut": "Donut",
   "item.bakingaway.flour": "Flour",
   "item.bakingaway.iced_spoon": "Iced Spoon",
@@ -10,7 +10,8 @@
   "item.bakingaway.risen_sweet_dough": "Risen Sweet Dough",
   "item.bakingaway.spoon": "Spoon",
   "item.bakingaway.sushi": "Sushi",
-  "item.bakingaway.uncooked_donut": "Un-Cooked Donut",
-  "item.bakingaway.uniced_donut": "Un-Iced Donut",
+  "item.bakingaway.suspicious_donut": "Suspicious Donut",
+  "item.bakingaway.uncooked_donut": "Raw Donut",
+  "item.bakingaway.uniced_donut": "Plain Donut",
   "itemGroup.bakingaway.baking": "Baking Away"
 }
