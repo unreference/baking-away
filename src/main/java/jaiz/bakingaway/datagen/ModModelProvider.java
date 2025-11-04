@@ -16,7 +16,7 @@ public class ModModelProvider extends FabricModelProvider {
 
     private static void registerSweetDough(BlockStateModelGenerator generator) {
         generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(ModBlocks.SWEET_DOUGH).with(
-                BlockStateVariantMap.models(SweetDoughBlock.DOUGH_STAGE).generate(stage -> {
+                BlockStateVariantMap.models(SweetDoughBlock.STAGE).generate(stage -> {
                     final Identifier id = ModelIds.getBlockModelId(ModBlocks.SWEET_DOUGH).withSuffixedPath("_stage" + stage);
                     return BlockStateModelGenerator.createWeightedVariant(id);
                 })

@@ -10,17 +10,11 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.Identifier;
 
 import java.util.function.Function;
 
 public class ModBlocks {
-
-    //Main Bits
-
-    public static final IntProperty DOUGH_STAGE = IntProperty.of("stage", 0, 3);
-
     public static final Block MILL = registerBlock("mill",
             MillBlock::new, Block.Settings.copy(Blocks.STONE));
 

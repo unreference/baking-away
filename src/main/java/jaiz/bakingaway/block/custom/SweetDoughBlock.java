@@ -1,6 +1,5 @@
 package jaiz.bakingaway.block.custom;
 
-import jaiz.bakingaway.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,16 +15,12 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.event.GameEvent;
 
 public class SweetDoughBlock extends Block {
-
-    public static final IntProperty DOUGH_STAGE = ModBlocks.DOUGH_STAGE;
-
+    public static final IntProperty STAGE = IntProperty.of("stage", 0, 3);
     private static final VoxelShape SHAPE = Block.createCuboidShape(3, 0, 3, 13, 4, 13);
 
     public SweetDoughBlock(Settings settings) {
         super(settings);
-
-        this.setDefaultState(this.stateManager.getDefaultState().with(DOUGH_STAGE, 0));
-
+        this.setDefaultState(this.stateManager.getDefaultState().with(STAGE, 0));
     }
 
     @Override
@@ -42,8 +37,8 @@ public class SweetDoughBlock extends Block {
                 || blockStateFuel.isOf(Blocks.FURNACE)
                 || blockStateFuel.isOf(Blocks.SOUL_FIRE)
         ) {
-            if (state.get(DOUGH_STAGE) <= 2) {
-                BlockState blockStateRise = state.with(DOUGH_STAGE, state.get(DOUGH_STAGE) + 1);
+            if (state.get(STAGE) <= 2) {
+                BlockState blockStateRise = state.with(STAGE, state.get(STAGE) + 1);
                 world.setBlockState(pos, blockStateRise, Block.NOTIFY_ALL);
                 world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Emitter.of(blockStateRise));
             }
@@ -52,7 +47,7 @@ public class SweetDoughBlock extends Block {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(DOUGH_STAGE, 0);
+        return this.getDefaultState().with(STAGE, 0);
     }
 
     @Override
@@ -62,6 +57,6 @@ public class SweetDoughBlock extends Block {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(DOUGH_STAGE);
+        builder.add(STAGE);
     }
 }
