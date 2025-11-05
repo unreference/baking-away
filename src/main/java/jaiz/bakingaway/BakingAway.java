@@ -11,12 +11,11 @@ public class BakingAway implements ModInitializer {
     public static final String MOD_ID = "bakingaway";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-
     @Override
     public void onInitialize() {
 
-        ModBlocks.registerModBlocks();
-        ModItems.registerModItems();
-        ModItemGroups.registerItemGroups();
+        ModBlocks.register();
+        ModItems.register();
+        ModItemGroups.register();
     }
 }

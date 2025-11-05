@@ -29,7 +29,7 @@ public class ModBlocks {
         return Registry.register(Registries.BLOCK, key, block);
     }
 
-    public static void registerModBlocks() {
+    public static void register() {
         BakingAway.LOGGER.info("Registering ModBlocks for " + BakingAway.MOD_ID);
     }
 

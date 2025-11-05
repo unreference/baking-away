@@ -4,9 +4,11 @@ import jaiz.bakingaway.BakingAway;
 import jaiz.bakingaway.block.ModBlocks;
 import jaiz.bakingaway.item.custom.IcedSpoonItem;
 import jaiz.bakingaway.item.custom.SuspiciousDonutItem;
+import jaiz.bakingaway.util.custom.Util;
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
+import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -18,25 +20,26 @@ import net.minecraft.util.Identifier;
 import java.util.function.Function;
 
 public class ModItems {
-
     public static final Item FLOUR = registerItem("flour", Item::new, new Item.Settings());
 
     public static final Item DONUT = registerItem("donut", Item::new, new Item.Settings()
             .food(ModFoodComponents.DONUT)
-            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(16675227)));
+            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(Util.hex("FE719B"))));
 
     public static final Item SUSPICIOUS_DONUT = registerItem("suspicious_donut", SuspiciousDonutItem::new, new Item.Settings()
-            .food(ModFoodComponents.DONUT));
+            .food(ModFoodComponents.DONUT)
+            .component(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, SuspiciousStewEffectsComponent.DEFAULT)
+            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(Util.hex("FE719B"))));
 
     public static final Item SUSHI = registerItem("sushi", Item::new, new Item.Settings()
             .food(ModFoodComponents.EXTRA_FOOD)
-            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(15719874)));
+            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(Util.hex("EFDDC2"))));
     public static final Item PIE = registerItem("pie", Item::new, new Item.Settings()
             .food(ModFoodComponents.EXTRA_FOOD)
-            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(14210737)));
+            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(Util.hex("D8D6B1"))));
     public static final Item BAKED_COOKIE = registerItem("baked_cookie", Item::new, new Item.Settings()
             .food(ModFoodComponents.EXTRA_FOOD)
-            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(14210737)));
+            .component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(Util.hex("D8D6B1"))));
 
     public static final Item BURNT_DONUT = registerItem("burnt_donut", Item::new, new Item.Settings()
             .food(ModFoodComponents.BURNT_DONUT,
@@ -77,7 +80,7 @@ public class ModItems {
         return registerItem(id, factory, new Item.Settings());
     }
 
-    public static void registerModItems() {
+    public static void register() {
         BakingAway.LOGGER.info("registering Mod Items for " + BakingAway.MOD_ID);
     }
 }

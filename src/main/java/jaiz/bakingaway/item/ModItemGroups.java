@@ -1,13 +1,14 @@
 package jaiz.bakingaway.item;
 
 import jaiz.bakingaway.BakingAway;
-import jaiz.bakingaway.item.custom.SuspiciousDonutIngredent;
+import jaiz.bakingaway.item.custom.SuspiciousDonutIngredient;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemStackSet;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -15,6 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
+import java.util.Set;
 
 public class ModItemGroups {
     public static final ItemGroup BAKE_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(BakingAway.MOD_ID, "baking"),
@@ -38,18 +40,23 @@ public class ModItemGroups {
                     }).build());
 
     private static void addSuspiciousDonuts(ItemGroup.Entries entries) {
-        for (SuspiciousDonutIngredent ingredient : SuspiciousDonutIngredent.values()) {
-            final ItemStack donut = new ItemStack(ModItems.SUSPICIOUS_DONUT);
-            final SuspiciousStewEffectsComponent.StewEffect effect = new SuspiciousStewEffectsComponent.StewEffect(ingredient.getEffect(), ingredient.getDuration());
-            final SuspiciousStewEffectsComponent effects = new SuspiciousStewEffectsComponent(List.of(effect));
-            final DyedColorComponent icing = new DyedColorComponent(ingredient.getIcingColor());
+        final Set<ItemStack> donuts = ItemStackSet.create();
 
-            donut.set(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, effects);
-            donut.set(DataComponentTypes.DYED_COLOR, icing);
-            entries.add(donut);
+        for (SuspiciousDonutIngredient ingredient : SuspiciousDonutIngredient.values()) {
+            final ItemStack donut = new ItemStack(ModItems.SUSPICIOUS_DONUT);
+            final SuspiciousStewEffectsComponent.StewEffect effect = new SuspiciousStewEffectsComponent.StewEffect(
+                    ingredient.getEffect(),
+                    ingredient.getTicks()
+            );
+
+            donut.set(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, new SuspiciousStewEffectsComponent(List.of(effect)));
+            donut.set(DataComponentTypes.DYED_COLOR, new DyedColorComponent(ingredient.getIcingColor()));
+            donuts.add(donut);
         }
+
+        entries.addAll(donuts);
     }
 
-    public static void registerItemGroups() {
+    public static void register() {
     }
 }

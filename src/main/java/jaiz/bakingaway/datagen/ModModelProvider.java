@@ -4,8 +4,8 @@ import jaiz.bakingaway.BakingAway;
 import jaiz.bakingaway.block.ModBlocks;
 import jaiz.bakingaway.block.custom.SweetDoughBlock;
 import jaiz.bakingaway.item.ModItems;
-import jaiz.bakingaway.item.custom.SuspiciousDonutIngredent;
-import jaiz.bakingaway.util.ModUtils;
+import jaiz.bakingaway.item.custom.SuspiciousDonutIngredient;
+import jaiz.bakingaway.util.custom.Util;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.*;
@@ -31,14 +31,14 @@ public class ModModelProvider extends FabricModelProvider {
 
     private static void registerSuspiciousDonuts(ItemModelGenerator generator) {
         final Item donut = ModItems.SUSPICIOUS_DONUT;
-        final String baseDonutName = ModUtils.getItemName(ModItems.DONUT);
+        final String baseDonutName = Util.itemName(ModItems.DONUT);
 
         final Identifier layer0 = Identifier.of(BakingAway.MOD_ID, "item/" + baseDonutName);
         final Identifier layer1 = Identifier.of(BakingAway.MOD_ID, "item/" + baseDonutName + "_icing");
         final Identifier layer2 = Identifier.of(BakingAway.MOD_ID, "item/" + baseDonutName + "_icing_glint");
 
         final Identifier model = Models.GENERATED_THREE_LAYERS.upload(donut, TextureMap.layered(layer0, layer1, layer2), generator.modelCollector);
-        final int icing = SuspiciousDonutIngredent.values()[0].getIcingColor();
+        final int icing = SuspiciousDonutIngredient.values()[0].getIcingColor();
         final TintSource noTint = ItemModels.constantTintSource(-1);
 
         generator.output.accept(donut, ItemModels.tinted(model, noTint, new DyeTintSource(icing), noTint));
@@ -46,14 +46,14 @@ public class ModModelProvider extends FabricModelProvider {
 
     private static void registerDonut(ItemModelGenerator generator) {
         final Item donut = ModItems.DONUT;
-        final String name = ModUtils.getItemName(donut);
+        final String name = Util.itemName(donut);
 
         final Identifier layer0 = Identifier.of(BakingAway.MOD_ID, "item/" + name);
         final Identifier layer1 = Identifier.of(BakingAway.MOD_ID, "item/" + name + "_icing");
         final Identifier layer2 = Identifier.of(BakingAway.MOD_ID, "item/" + name + "_icing_glint");
 
         final Identifier model = Models.GENERATED_THREE_LAYERS.upload(donut, TextureMap.layered(layer0, layer1, layer2), generator.modelCollector);
-        final int icing = 16675227;
+        final int icing = Util.hex("FE719B");
         final TintSource noTint = ItemModels.constantTintSource(-1);
 
         generator.output.accept(donut, ItemModels.tinted(model, noTint, new DyeTintSource(icing), noTint));

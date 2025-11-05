@@ -3,8 +3,9 @@ package jaiz.bakingaway.datagen;
 import jaiz.bakingaway.BakingAway;
 import jaiz.bakingaway.block.ModBlocks;
 import jaiz.bakingaway.item.ModItems;
-import jaiz.bakingaway.item.custom.SuspiciousDonutIngredent;
-import jaiz.bakingaway.util.ModUtils;
+import jaiz.bakingaway.item.custom.SuspiciousDonutIngredient;
+import jaiz.bakingaway.registry.ModItemTags;
+import jaiz.bakingaway.util.custom.Util;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.AdvancementCriterion;
@@ -23,6 +24,7 @@ import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -34,23 +36,32 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     private static void offerSuspiciousDonutRecipes(RegistryWrapper.Impl<Item> itemLookup, RecipeExporter exporter) {
-        for (SuspiciousDonutIngredent ingredient : SuspiciousDonutIngredent.values()) {
-            final SuspiciousStewEffectsComponent.StewEffect entry = new SuspiciousStewEffectsComponent.StewEffect(ingredient.getEffect(), ingredient.getDuration());
+        for (SuspiciousDonutIngredient ingredient : SuspiciousDonutIngredient.values()) {
+            final SuspiciousStewEffectsComponent.StewEffect entry = new SuspiciousStewEffectsComponent.StewEffect(ingredient.getEffect(), ingredient.getTicks());
             final SuspiciousStewEffectsComponent effects = new SuspiciousStewEffectsComponent(List.of(entry));
 
             final ItemStack donut = new ItemStack(ModItems.SUSPICIOUS_DONUT);
             donut.set(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, effects);
             donut.set(DataComponentTypes.DYED_COLOR, new DyedColorComponent(ingredient.getIcingColor()));
 
-            for (Item ingredientItem : ingredient.getItems()) {
-                ShapelessRecipeJsonBuilder.create(itemLookup, RecipeCategory.FOOD, donut)
-                        .input(ModItems.UNICED_DONUT)
-                        .input(ModItems.ICED_SPOON)
-                        .input(ingredientItem)
-                        .criterion(hasItemName(ingredientItem), hasItemCondition(itemLookup, ingredientItem))
-                        .offerTo(exporter, String.valueOf(Identifier.of(BakingAway.MOD_ID, fromConversion(donut.getItem(), ingredientItem))));
-            }
+            final Item icedSpoon = ModItems.ICED_SPOON;
+            final TagKey<Item> ingredientTag = TagKey.of(RegistryKeys.ITEM, Identifier.of(BakingAway.MOD_ID, "suspicious_donut/" + ingredient.getName() + "_ingredients"));
+            ShapelessRecipeJsonBuilder.create(itemLookup, RecipeCategory.FOOD, donut)
+                    .input(ModItems.UNICED_DONUT)
+                    .input(icedSpoon)
+                    .input(ingredientTag)
+                    .group(Util.itemName(donut.getItem()))
+                    .criterion(hasTagName(ingredientTag), hasTagCondition(itemLookup, ingredientTag))
+                    .offerTo(exporter, String.valueOf(Identifier.of(BakingAway.MOD_ID, Util.itemName(donut.getItem()) + "_from_" + ingredient.getName() + "_ingredients")));
         }
+    }
+
+    private static AdvancementCriterion<?> hasTagCondition(RegistryWrapper.Impl<Item> itemLookup, TagKey<Item> tag) {
+        return RecipeGenerator.conditionsFromPredicates(ItemPredicate.Builder.create().tag(itemLookup, tag));
+    }
+
+    private static String hasTagName(TagKey<Item> tag) {
+        return tag.id().getPath();
     }
 
     private static void offerDonutRecipe(RegistryWrapper.Impl<Item> itemLookup, RecipeExporter exporter) {
@@ -86,17 +97,23 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         final Item raw = ModItems.UNCOOKED_DONUT;
         CookingRecipeJsonBuilder.createSmelting(
                         Ingredient.ofItem(raw), RecipeCategory.FOOD, ModItems.UNICED_DONUT, 0.7f, 200)
+                .group(Util.itemName(raw))
                 .criterion(hasItemName(raw), hasItemCondition(itemLookup, raw))
                 .offerTo(exporter);
     }
 
     private static void offerBurntDonutRecipe(RegistryWrapper.Impl<Item> itemLookup, RecipeExporter exporter) {
-        final Item donut = ModItems.UNICED_DONUT;
+        final TagKey<Item> burnable = ModItemTags.BURNABLE_DONUTS;
         CookingRecipeJsonBuilder.createSmelting(
-                        Ingredient.ofItem(donut), RecipeCategory.FOOD, ModItems.BURNT_DONUT, 0.7f, 200)
-                .criterion(hasItemName(donut), hasItemCondition(itemLookup, donut))
+                        ingredientFromTag(itemLookup, burnable), RecipeCategory.FOOD, ModItems.BURNT_DONUT, 0.7f, 200)
+                .criterion(hasTagName(burnable), hasTagCondition(itemLookup, burnable))
                 .offerTo(exporter);
     }
+
+    private static Ingredient ingredientFromTag(RegistryWrapper.Impl<Item> itemLookup, TagKey<Item> tag) {
+        return Ingredient.ofTag(itemLookup.getOrThrow(tag));
+    }
+
 
     private static void offerUncookedDonutRecipe(RegistryWrapper.Impl<Item> itemLookup, RecipeExporter exporter) {
         final Item risenSweetDough = ModItems.RISEN_SWEET_DOUGH;
@@ -130,12 +147,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .offerTo(exporter);
     }
 
-    private static String fromConversion(ItemConvertible to, ItemConvertible from) {
-        return ModUtils.getItemName(to) + "_from_" + ModUtils.getItemName(from);
-    }
-
     private static String hasItemName(ItemConvertible item) {
-        return "has_" + ModUtils.getItemName(item);
+        return "has_" + Util.itemName(item);
     }
 
     private static AdvancementCriterion<InventoryChangedCriterion.Conditions> hasItemCondition(RegistryWrapper.Impl<Item> itemLookup, ItemConvertible item) {
